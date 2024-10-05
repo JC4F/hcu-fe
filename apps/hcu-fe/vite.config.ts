@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+import { fileURLToPath } from 'url';
 
 export default defineConfig({
   root: __dirname,
@@ -19,6 +20,11 @@ export default defineConfig({
   },
 
   plugins: [react(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
+  resolve: {
+    alias: {
+      '@ui': fileURLToPath(new URL('../../packages/ui/src', import.meta.url)),
+    },
+  },
 
   // Uncomment this if you are using workers.
   // worker: {

@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@hcu-fe/ui": ["packages/ui/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

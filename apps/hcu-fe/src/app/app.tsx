@@ -1,9 +1,9 @@
-import NxWelcome from './nx-welcome';
+import { Button } from '@hcu-fe/ui';
 
 export function App() {
   return (
-    <div>
-      <NxWelcome title="hcu-fe" />
+    <div className="w-full h-full flex items-center justify-center">
+      <Button>Shadcn UI</Button>
     </div>
   );
 }
