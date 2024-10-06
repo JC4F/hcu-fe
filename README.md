@@ -17,7 +17,7 @@
 ### Install packages
 
 ```shell
-pnpm i
+pnpm install --recursive
 ```
 
 ### Setup .env file
