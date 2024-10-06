@@ -41,5 +41,5 @@ pnpm dev:hcu-fe
 ### Storybook UI library
 
 ```shell
-pnpm storybook:hcu-fe
+pnpm storybook:ui
 ```

@@ -5,7 +5,7 @@
   "scripts": {
     "mock-server:hcu-fe": "cd apps/hcu-fe && vite-node mock-server.ts | pino-pretty -c",
     "dev:hcu-fe": "npx nx serve hcu-fe",
-    "storybook:hcu-fe": "npx nx storybook ui",
+    "storybook:ui": "npx nx storybook ui",
     "build-lint": "npx nx run-many -t build lint",
     "cleandep": "rm -rf node_modules && pnpm -r exec rm -rf node_modules"
   },
