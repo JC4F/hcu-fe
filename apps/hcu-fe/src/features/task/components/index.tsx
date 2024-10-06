@@ -1,16 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import {
-  Button,
-  Spinner,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@hcu-fe/ui';
+import { Spinner, Tabs, TabsContent, TabsList, TabsTrigger } from '@hcu-fe/ui';
 import { TaskList } from '@/features/task/components/task-list';
 import { useTasks } from '@/features/task/api/get-tasks';
 import { CreateTask } from '@/features/task/components/create-task';
+import { capitalizeFirstLetter } from '@/utils/string';
+import { TaskPaginate } from '@/features/task/components/task-paginate';
 
+type Tab = 'all' | 'complete' | 'incomplete';
+const tabs: Tab[] = ['all', 'complete', 'incomplete'];
 const ITEMS_PER_PAGE = 8;
 
 export const TaskComponent = () => {
@@ -52,24 +49,15 @@ export const TaskComponent = () => {
         <CreateTask />
         <Tabs defaultValue="all" onValueChange={setFilter} className="mb-4">
           <TabsList className="flex w-full bg-gray-100 p-1 rounded-md">
-            <TabsTrigger
-              value="all"
-              className="flex-1 rounded-sm text-sm py-1 px-2 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
-            >
-              All
-            </TabsTrigger>
-            <TabsTrigger
-              value="completed"
-              className="flex-1 rounded-sm text-sm py-1 px-2 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
-            >
-              Completed
-            </TabsTrigger>
-            <TabsTrigger
-              value="incomplete"
-              className="flex-1 rounded-sm text-sm py-1 px-2 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
-            >
-              Incomplete
-            </TabsTrigger>
+            {tabs.map((tab) => (
+              <TabsTrigger
+                key={tab}
+                value={tab}
+                className="flex-1 rounded-sm text-sm py-1 px-2 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
+              >
+                {capitalizeFirstLetter(tab)}
+              </TabsTrigger>
+            ))}
           </TabsList>
           <div
             className="overflow-hidden transition-[height] duration-300 ease-in-out"
@@ -79,42 +67,22 @@ export const TaskComponent = () => {
               {isLoading ? (
                 <Spinner size="default" />
               ) : (
-                <>
-                  <TabsContent value="all">
+                tabs.map((tab) => (
+                  <TabsContent key={tab} value={tab}>
                     <TaskList tasks={paginatedTasks} />
                   </TabsContent>
-                  <TabsContent value="completed">
-                    <TaskList tasks={paginatedTasks} />
-                  </TabsContent>
-                  <TabsContent value="incomplete">
-                    <TaskList tasks={paginatedTasks} />
-                  </TabsContent>
-                </>
+                ))
               )}
             </div>
           </div>
         </Tabs>
-        <div className="flex justify-between items-center mt-4">
-          <Button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-4 focus:ring-gray-300 text-xs px-2 py-1"
-          >
-            Previous
-          </Button>
-          <span className="text-sm font-medium text-gray-700">
-            Page {currentPage} of {totalPages}
-          </span>
-          <Button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            disabled={currentPage === totalPages}
-            className="bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-4 focus:ring-gray-300 text-xs px-2 py-1"
-          >
-            Next
-          </Button>
-        </div>
+        {paginatedTasks.length > 0 && (
+          <TaskPaginate
+            totalPages={totalPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
       </div>
     </div>
   );

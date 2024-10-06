@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "mock-server:hcu-fe": "cd apps/hcu-fe && vite-node mock-server.ts | pino-pretty -c",
-    "dev:hcu-fe": "npx nx serve hcu-fe"
+    "dev:hcu-fe": "npx nx serve hcu-fe",
+    "storybook:hcu-fe": "npx nx storybook ui"
   },
   "private": true,
   "dependencies": {

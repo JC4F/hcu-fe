@@ -59,7 +59,7 @@ export const TaskList = ({ tasks }: { tasks: Task[] }) => {
             className="w-4 h-4"
           />
           <label
-            // htmlFor={`task-${task.id}`}
+            htmlFor={`task-${task.id}`}
             className={`flex-grow text-sm ${
               task.complete ? 'line-through text-gray-500' : 'text-gray-800'
             } truncate`}

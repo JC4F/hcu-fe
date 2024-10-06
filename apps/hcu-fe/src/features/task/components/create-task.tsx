@@ -61,7 +61,7 @@ export const CreateTask = () => {
                     disabled={createTaskMutation.isPending}
                     type="submit"
                     size="sm"
-                    className="px-4 bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 font-medium rounded-md text-sm transition duration-200"
+                    className="my-auto px-4 bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 font-medium rounded-md text-sm transition duration-200"
                   >
                     Add
                   </Button>

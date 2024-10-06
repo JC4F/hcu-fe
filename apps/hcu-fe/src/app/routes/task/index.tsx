@@ -33,7 +33,6 @@ export const TaskRoute = () => {
         >
           <TaskComponent />
         </ErrorBoundary>
-        ＜
       </Suspense>
     </ContentLayout>
   );
