@@ -17,6 +17,10 @@ export const createAppRouter = (queryClient: QueryClient) =>
         const { TaskRoute } = await import('./routes/task');
         return { Component: TaskRoute };
       },
+      loader: async () => {
+        const { taskLoader } = await import('./routes/task');
+        return taskLoader(queryClient)();
+      },
     },
     {
       path: '*',

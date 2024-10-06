@@ -20,7 +20,7 @@ export const updateTask = ({
   data: UpdateTaskInput;
   taskId: string;
 }): Promise<Task> => {
-  return api.patch(`/tasks/${taskId}`, data);
+  return api.put(`/tasks/${taskId}`, data);
 };
 
 type UseUpdateTaskOptions = {

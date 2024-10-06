@@ -6,7 +6,7 @@ import { MutationConfig } from '@/lib/react-query';
 import { getTasksQueryOptions } from './get-tasks';
 
 export const deleteTask = ({ taskId }: { taskId: string }) => {
-  return api.delete(`/tasks/:${taskId}`);
+  return api.delete(`/tasks/${taskId}`);
 };
 
 type UseDeleteTaskOptions = {

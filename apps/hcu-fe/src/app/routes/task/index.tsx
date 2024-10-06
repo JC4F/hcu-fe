@@ -1,8 +1,20 @@
 import { ContentLayout } from '@/components/layouts';
-import { Button, Spinner } from '@hcu-fe/ui';
+import { getTasksQueryOptions } from '@/features/task/api/get-tasks';
+import { TaskComponent } from '@/features/task/components';
+import { Spinner } from '@hcu-fe/ui';
+import { QueryClient } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useLocation } from 'react-router-dom';
+
+export const taskLoader = (queryClient: QueryClient) => async () => {
+  const query = getTasksQueryOptions();
+
+  return (
+    queryClient.getQueryData(query.queryKey) ??
+    (await queryClient.fetchQuery(query))
+  );
+};
 
 export const TaskRoute = () => {
   const location = useLocation();
@@ -19,8 +31,9 @@ export const TaskRoute = () => {
           key={location.pathname}
           fallback={<div>Something went wrong!</div>}
         >
-          <Button>Task App</Button>
+          <TaskComponent />
         </ErrorBoundary>
+        ＜
       </Suspense>
     </ContentLayout>
   );
