@@ -3,8 +3,8 @@ import { HttpResponse, http } from 'msw';
 import { nanoid } from 'nanoid';
 
 import { env } from '@/config/env';
-import { db } from '../db';
-import { networkDelay } from '../utils';
+import { db, persistDb } from '../db';
+// import { networkDelay } from '../utils';
 
 type TaskCreateBody = {
   title: string;
@@ -16,10 +16,11 @@ type TaskUpdateBody = {
 
 export const tasksHandlers = [
   http.get(`${env.API_URL}/tasks`, async () => {
-    await networkDelay();
+    // await networkDelay();
 
     try {
       const result = db.task.getAll();
+
       return HttpResponse.json({ data: result });
     } catch (error: any) {
       return HttpResponse.json(
@@ -30,10 +31,18 @@ export const tasksHandlers = [
   }),
 
   http.post(`${env.API_URL}/tasks`, async ({ request }) => {
-    await networkDelay();
+    // await networkDelay();
 
     try {
       const { title } = (await request.json()) as TaskCreateBody;
+
+      const task = db.task.findFirst({
+        where: { title: { equals: title } },
+      });
+
+      if (task) {
+        return HttpResponse.json({ message: 'Task exist' }, { status: 404 });
+      }
 
       const newTask = db.task.create({
         id: nanoid(),
@@ -41,6 +50,7 @@ export const tasksHandlers = [
         complete: false,
         createdAt: new Date().getTime(),
       });
+      await persistDb('task');
 
       return HttpResponse.json({ data: newTask }, { status: 201 });
     } catch (error: any) {
@@ -52,7 +62,7 @@ export const tasksHandlers = [
   }),
 
   http.put(`${env.API_URL}/tasks/:id`, async ({ request, params }) => {
-    await networkDelay();
+    // await networkDelay();
 
     try {
       const id = params.id as string;
@@ -69,6 +79,7 @@ export const tasksHandlers = [
           { status: 404 }
         );
       }
+      await persistDb('task');
 
       return HttpResponse.json({ data: updatedTask });
     } catch (error: any) {
@@ -80,7 +91,7 @@ export const tasksHandlers = [
   }),
 
   http.delete(`${env.API_URL}/tasks/:id`, async ({ request, params }) => {
-    await networkDelay();
+    // await networkDelay();
 
     try {
       const id = params.id as string;
@@ -88,6 +99,7 @@ export const tasksHandlers = [
       const deletedTask = db.task.delete({
         where: { id: { equals: id } },
       });
+      await persistDb('task');
 
       if (!deletedTask) {
         return HttpResponse.json(

@@ -1,22 +1,15 @@
-import { useNotifications } from '@/components/ui/notifications';
 import { useDeleteTask } from '@/features/task/api/delete-task';
 import { useUpdateTask } from '@/features/task/api/update-task';
 import { Task } from '@/types/api';
 import { Button, Checkbox } from '@hcu-fe/ui';
 import { ClipboardList, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export const TaskList = ({ tasks }: { tasks: Task[] }) => {
-  const [removedTaskIds, setRemovedTaskIds] = useState<string[]>([]);
-
-  const { addNotification } = useNotifications();
   const deleteTaskMutation = useDeleteTask({
     mutationConfig: {
       onSuccess: () => {
-        addNotification({
-          type: 'success',
-          title: 'Task Deleted',
-        });
+        toast.success('Task Deleted');
       },
     },
   });
@@ -24,13 +17,23 @@ export const TaskList = ({ tasks }: { tasks: Task[] }) => {
   const updateTaskMutation = useUpdateTask({
     mutationConfig: {
       onSuccess: () => {
-        addNotification({
-          type: 'success',
-          title: 'Task Updated',
-        });
+        toast.success('Task Updated');
       },
     },
   });
+
+  const updateTask = (id: string, complete: boolean) => {
+    updateTaskMutation.mutate({ data: { complete }, taskId: id });
+  };
+
+  const deleteTask = (id: string) => {
+    deleteTaskMutation.mutate({ taskId: id });
+  };
+
+  const isUpdating = updateTaskMutation.isPending;
+  const updateTaskId = updateTaskMutation.variables?.taskId;
+  const isDeleting = deleteTaskMutation.isPending;
+  const deleteTaskId = deleteTaskMutation.variables?.taskId;
 
   if (tasks.length === 0) {
     return (
@@ -41,37 +44,17 @@ export const TaskList = ({ tasks }: { tasks: Task[] }) => {
       </div>
     );
   }
-
-  const updateTask = (id: string, complete: boolean) => {
-    updateTaskMutation.mutate({ data: { complete }, taskId: id });
-  };
-
-  const deleteTask = (id: string) => {
-    deleteTaskMutation.mutate({ taskId: id });
-    setRemovedTaskIds([...removedTaskIds, id]);
-    setTimeout(() => {
-      setRemovedTaskIds(removedTaskIds.filter((taskId) => taskId !== id));
-    }, 300);
-  };
-
-  const isUpdating = updateTaskMutation.isPending;
-  const isDeleting = deleteTaskMutation.isPending;
-
   return (
     <ul className="space-y-2">
       {tasks.map((task) => (
         <li
           key={task.id}
-          className={`flex items-center space-x-2 p-2 bg-gray-50 rounded-md shadow-sm transition-all duration-300 ${
-            removedTaskIds.includes(task.id)
-              ? 'opacity-0 transform translate-x-full'
-              : 'opacity-100 transform translate-x-0'
-          }`}
+          className="flex items-center space-x-2 p-2 bg-gray-50 rounded-md shadow-sm transition-all duration-300"
         >
           <Checkbox
             id={`task-${task.id}`}
             checked={task.complete}
-            disabled={isUpdating}
+            disabled={isUpdating && updateTaskId === task.id}
             onCheckedChange={() => updateTask(task.id, !task.complete)}
             className="w-4 h-4"
           />
@@ -86,7 +69,7 @@ export const TaskList = ({ tasks }: { tasks: Task[] }) => {
           <Button
             variant="ghost"
             size="sm"
-            disabled={isDeleting}
+            disabled={isDeleting && deleteTaskId === task.id}
             onClick={() => deleteTask(task.id)}
             className="text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full p-1 transition duration-200"
           >

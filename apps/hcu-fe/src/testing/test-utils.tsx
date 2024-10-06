@@ -4,7 +4,6 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
 import { AppProvider } from '@/app/provider';
@@ -61,6 +60,3 @@ export const renderApp = async (
 
   return returnValue;
 };
-
-export * from '@testing-library/react';
-export { userEvent, rtlRender };

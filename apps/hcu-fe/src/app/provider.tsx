@@ -7,7 +7,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { MainErrorFallback } from '@/components/errors/main';
 import { queryConfig } from '@/lib/react-query';
 import { Spinner } from '@hcu-fe/ui';
-import { Notifications } from '@/components/ui/notifications';
+import { ToastContainer } from 'react-toastify';
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -33,7 +33,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         <HelmetProvider>
           <QueryClientProvider client={queryClient}>
             {import.meta.env.DEV && <ReactQueryDevtools />}
-            <Notifications />
+            <ToastContainer />
             {children}
           </QueryClientProvider>
         </HelmetProvider>

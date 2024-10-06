@@ -9,6 +9,7 @@ module.exports = [
     // Override or add rules here
     rules: {
       'react-hooks/exhaustive-deps': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
     },
   },
 ];

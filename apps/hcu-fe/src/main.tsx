@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import './styles.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { enableMocking } from './testing/mocks';
 import { App } from './app';

@@ -26,7 +26,7 @@ export const TaskComponent = () => {
 
   useEffect(() => {
     if (contentRef.current) {
-      setContentHeight(contentRef.current.scrollHeight);
+      setContentHeight(contentRef.current.scrollHeight + 8);
     }
   }, [tasks, filter, currentPage]);
 

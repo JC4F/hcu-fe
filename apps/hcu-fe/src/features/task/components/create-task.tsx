@@ -10,22 +10,18 @@ import {
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNotifications } from '@/components/ui/notifications';
 import { useCreateTask } from '@/features/task/api/create-task';
+import { toast } from 'react-toastify';
 
 const formSchema = z.object({
   task: z.string().min(1, 'Task cannot be empty').max(100, 'Task is too long'),
 });
 
 export const CreateTask = () => {
-  const { addNotification } = useNotifications();
   const createTaskMutation = useCreateTask({
     mutationConfig: {
       onSuccess: () => {
-        addNotification({
-          type: 'success',
-          title: 'Task Created',
-        });
+        toast.success('Task Created');
       },
     },
   });
