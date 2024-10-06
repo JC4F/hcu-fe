@@ -2,7 +2,13 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@hcu-fe/ui": ["../../libs/shared/ui/src/index.ts"]
+    },
     "types": [
+      "vitest/globals",
       "node",
       "@nx/react/typings/cssmodule.d.ts",
       "@nx/react/typings/image.d.ts",
