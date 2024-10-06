@@ -22,7 +22,9 @@ export default defineConfig({
   plugins: [react(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
   resolve: {
     alias: {
-      '@ui': fileURLToPath(new URL('../../packages/ui/src', import.meta.url)),
+      '@ui': fileURLToPath(
+        new URL('../../libs/shared/ui/src', import.meta.url)
+      ),
     },
   },
 
